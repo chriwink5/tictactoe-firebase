@@ -26,30 +26,6 @@ public class GameActivity extends AppCompatActivity {
     DatabaseReference reference;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     boolean kicked = false;
 
     boolean isXActive = false;
