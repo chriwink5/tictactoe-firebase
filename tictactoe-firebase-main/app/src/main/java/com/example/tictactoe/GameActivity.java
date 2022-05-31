@@ -383,7 +383,7 @@ public class GameActivity extends AppCompatActivity {
             };
 
 
-            // Failed to read value
+            // Fehler beim lesen
             reference.addListenerForSingleValueEvent(listener);
 
             reference.removeEventListener(moveListener);
