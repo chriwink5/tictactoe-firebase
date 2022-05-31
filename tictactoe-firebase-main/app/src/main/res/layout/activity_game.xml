@@ -37,6 +37,7 @@
             android:orientation="horizontal">
 
             <!--images of the grid boxes-->
+
             <ImageView
                 android:id="@+id/imageView0"
                 android:layout_width="match_parent"
