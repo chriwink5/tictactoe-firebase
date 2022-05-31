@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
-    // Initialize the Firebase instance
+    // Verbinden mit der Firebase Cloud
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://tictachoe-65df8-default-rtdb.europe-west1.firebasedatabase.app/");
     DatabaseReference reference = database.getReference("games");
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.gameList);
 
         ArrayList<String> gameList = new ArrayList<>();
-        // For listing all games, beginning with the newest one created.
+        // Zum Anzeigen der aktuellen Spiele. Neuset wird zuerst angezeigt.
         Map<Long, String> filteredGameMap = new TreeMap<>(Collections.reverseOrder());
 
         arrAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, gameList);
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
                             Long timestamp = (Long) dataSnapshot.child((String) pair.getKey()).child("createdAt").child("time").getValue();
 
-                            // Don't try to add the game to the list if no timestamp is stored to Firebase yet.
+                            // Spiel nicht hinzufÃ¼gen, wenn in Datenbank keine Zeit eingetragen ist
                             if (timestamp != null) {
                                 boolean xActive = (boolean) dataSnapshot.child((String) pair.getKey()).child("XisActive").getValue();
                                 boolean oActive = (boolean) dataSnapshot.child((String) pair.getKey()).child("OisActive").getValue();
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     public void createGame(View view) {
         Intent intent = new Intent(MainActivity.this, GameActivity.class);
 
-        // Generate a random game ID between 1000 and 9999.
+        // Generiere nummer zwischen 1000 und 9999 --> Game ID
         int gameID =  (int) Math.floor(Math.random()*(9999-1000+1)+1000);
 
         intent.putExtra("playerID", 0);
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             EditText gameNumberField = findViewById(R.id.gameNumber);
 
-            // Get game ID from TextBox
+            // Game ID von eingabefeld auslesen
             gameID = Integer.parseInt(gameNumberField.getText().toString());
         } catch (Exception e) {
             Toast.makeText(this, "Konnte dem Spiel nicht beitreten.", Toast.LENGTH_LONG).show();

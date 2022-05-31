@@ -229,6 +229,9 @@ public class GameActivity extends AppCompatActivity {
 
             reference.child("createdAt").setValue(new Date());
 
+            TextView eidi = findViewById(R.id.ID);
+            eidi.setText("ID: "+ gameID);
+
             TextView status = findViewById(R.id.status);
             status.setText("Bitte mach den ersten Zug..");
 
