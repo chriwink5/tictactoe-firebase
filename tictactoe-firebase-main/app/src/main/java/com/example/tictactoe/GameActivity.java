@@ -171,20 +171,14 @@ public class GameActivity extends AppCompatActivity {
                     winnerStr = "O hat das Spiel gewonnen";
                 }
 
-                // Updaten der Status Textleiste
-                TextView status = findViewById(R.id.status);
-                status.setText(winnerStr);
+
             }
         }
 
         // winnerflag auf unentschiden setzten, wenn 9 Aktionen ausgeführt wurden und es keine Sieger gibt
-        if (winningFlag == 0 && counter == 9) {
-            TextView status = findViewById(R.id.status);
-            status.setText("Spiel unentschieden");
-        }
-
         return winningFlag;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,13 +191,7 @@ public class GameActivity extends AppCompatActivity {
 
 
 
-        // Anzeigen von Du spielst X bzw. 0
-        TextView whoAmI = findViewById(R.id.whoAmI);
-        if (playerID == 0) {
-            whoAmI.setText("Du spielst X");
-        } else {
-            whoAmI.setText("Du spielst O");
-        }
+
 
         reference = database.getReference("games")
                 .child(String.valueOf(gameID));
@@ -232,16 +220,14 @@ public class GameActivity extends AppCompatActivity {
             TextView eidi = findViewById(R.id.ID);
             eidi.setText("ID: "+ gameID);
 
-            TextView status = findViewById(R.id.status);
-            status.setText("Bitte mach den ersten Zug..");
 
-            refreshActiveStatus();
+
 
             listenForMoves();
         } else {
             anyFieldSet = false;
 
-            // Vor den Joinen eines SPieles, zuerst schauen ob schon eine Aktion ausgeführt wurde
+            // Vor dem Joinen eines Spieles, zuerst schauen ob schon eine Aktion ausgeführt wurde
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -251,7 +237,6 @@ public class GameActivity extends AppCompatActivity {
                     isXActive = (Boolean) dataSnapshot.child("XisActive").getValue();
                     isOActive = (Boolean) dataSnapshot.child("OisActive").getValue();
 
-                    refreshActiveStatus();
 
                     refreshScene(fieldStateList);
 
@@ -289,7 +274,7 @@ public class GameActivity extends AppCompatActivity {
                     resetGame();
                 }
 
-                // Firebase benöotigt ein Logfile, hier ist eine liste damit
+                // Firebase benötigt ein Logfile, hier ist eine liste damit
                 Log.w("MainActivity", "Data change.");
                 List<Long> fieldStateList = (List<Long>) dataSnapshot.child("fieldState").getValue();
 
@@ -300,7 +285,7 @@ public class GameActivity extends AppCompatActivity {
 
                 isXActive = (Boolean) dataSnapshot.child("XisActive").getValue();
                 isOActive = (Boolean) dataSnapshot.child("OisActive").getValue();
-                refreshActiveStatus();
+
 
                 checkGameWinner();
             }
@@ -332,10 +317,7 @@ public class GameActivity extends AppCompatActivity {
             }
         }
 
-        if (playerID == 1 && !anyFieldSet) {
-            TextView status = findViewById(R.id.status);
-            status.setText("Warte auf ersten Zug des Gegners..");
-        }
+
     }
 
     public void refreshImage(ImageView img, Integer playerID) {
@@ -343,15 +325,13 @@ public class GameActivity extends AppCompatActivity {
         if (playerID == 0) {
             img.setImageResource(R.drawable.x);
 
-            // Ändern des TextBox Status
-            TextView status = findViewById(R.id.status);
-            status.setText("Am Zug: O");
+
+
         } else {
             img.setImageResource(R.drawable.o);
 
-            // Ändern des TextBox Status
-            TextView status = findViewById(R.id.status);
-            status.setText("Am Zug: X");
+
+
         }
     }
 
@@ -397,28 +377,7 @@ public class GameActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void refreshActiveStatus() {
-        TextView xactive = findViewById(R.id.textViewActiveX);
 
-        if (isXActive) {
-            xactive.setText("X: Online");
-        } else {
-            xactive.setText("X: Offline");
-        }
-
-        TextView oactive = findViewById(R.id.textViewActiveO);
-
-        if (isOActive) {
-            oactive.setText("O: Online");
-        } else {
-            oactive.setText("O: Offline");
-        }
-
-        if (playerID == 1 && isXActive == false) {
-            Toast.makeText(this, "Der Host hat das Spiel verlassen.", Toast.LENGTH_LONG).show();
-            finish();
-        }
-    }
 
     public void leaveGame(View view) {
         finish();
